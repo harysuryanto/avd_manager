@@ -62,57 +62,68 @@ class AdbDevices extends HookConsumerWidget {
       value: ref.watch(provider),
       refreshAction: () => ref.refresh(provider.future),
       skipLoadingOnRefresh: true,
-      data: (data) => Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: data.map(
-          (e) {
-            final serialNumber = e.split('	').first;
-            final status = e.split('	').last;
-            return ListTile(
-              title: Row(
-                children: [
-                  Text(serialNumber),
-                  const Gap(4),
-                  InkWell(
-                    onTap: () => Clipboard.setData(
-                      ClipboardData(text: serialNumber),
-                    ).then(
-                      (value) =>
-                          context.showSnackBarMessage('Copied $serialNumber'),
+      data: (data) => data.isEmpty
+          ? const Center(
+              child: Padding(
+                padding: EdgeInsets.all(8),
+                child: Text('Empty'),
+              ),
+            )
+          : Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: data.map(
+                (e) {
+                  final serialNumber = e.split('	').first;
+                  final status = e.split('	').last;
+                  return ListTile(
+                    title: Row(
+                      children: [
+                        Text(serialNumber),
+                        const Gap(4),
+                        InkWell(
+                          onTap: () => Clipboard.setData(
+                            ClipboardData(text: serialNumber),
+                          ).then(
+                            (value) => context.showSnackBarMessage(
+                              'Copied $serialNumber',
+                            ),
+                          ),
+                          child: const Icon(Icons.copy, size: 10),
+                        ),
+                      ],
                     ),
-                    child: const Icon(Icons.copy, size: 10),
-                  ),
-                ],
-              ),
-              subtitle: Row(
-                children: [
-                  Text(status),
-                  const Gap(4),
-                  Tooltip(
-                    message: switch (status) {
-                      _DeviceStatus.offline =>
-                        'The device is not connected to adb or is not responding',
-                      _DeviceStatus.device =>
-                        'The device is connected to the adb server. Note that this state does not imply that the Android system is fully booted and operational, because the device connects to adb while the system is still booting. After boot-up, this is the normal operational state of a device.',
-                      _DeviceStatus.noDevice => 'There is no device connected',
-                      _ => ''
-                    },
-                    child: const Icon(Icons.info_outline, size: 10),
-                  ),
-                ],
-              ),
-              trailing: TextButton(
-                onPressed: () => status == _DeviceStatus.device
-                    ? _disconnectDevice(ref, context, serialNumber)
-                    : _connectDevice(ref, context, serialNumber),
-                child: Text(
-                  status == _DeviceStatus.device ? 'Disconnect' : 'Connect',
-                ),
-              ),
-            );
-          },
-        ).toList(),
-      ),
+                    subtitle: Row(
+                      children: [
+                        Text(status),
+                        const Gap(4),
+                        Tooltip(
+                          message: switch (status) {
+                            _DeviceStatus.offline =>
+                              'The device is not connected to adb or is not responding',
+                            _DeviceStatus.device =>
+                              'The device is connected to the adb server. Note that this state does not imply that the Android system is fully booted and operational, because the device connects to adb while the system is still booting. After boot-up, this is the normal operational state of a device.',
+                            _DeviceStatus.noDevice =>
+                              'There is no device connected',
+                            _ => ''
+                          },
+                          child: const Icon(Icons.info_outline, size: 10),
+                        ),
+                      ],
+                    ),
+                    trailing: TextButton(
+                      onPressed: () => status == _DeviceStatus.device
+                          ? _disconnectDevice(ref, context, serialNumber)
+                          : _connectDevice(ref, context, serialNumber),
+                      child: Text(
+                        status == _DeviceStatus.device
+                            ? 'Disconnect'
+                            : 'Connect',
+                      ),
+                    ),
+                  );
+                },
+              ).toList(),
+            ),
     );
   }
 }

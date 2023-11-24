@@ -31,20 +31,27 @@ class Emulators extends HookConsumerWidget {
       value: ref.watch(provider),
       refreshAction: () => ref.refresh(provider.future),
       skipLoadingOnRefresh: true,
-      data: (data) => Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: data
-            .map(
-              (e) => ListTile(
-                title: Text(e),
-                trailing: TextButton(
-                  onPressed: () => _startAvd(ref, e),
-                  child: const Text('Start'),
-                ),
+      data: (data) => data.isEmpty
+          ? const Center(
+              child: Padding(
+                padding: EdgeInsets.all(8),
+                child: Text('Empty'),
               ),
             )
-            .toList(),
-      ),
+          : Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: data
+                  .map(
+                    (e) => ListTile(
+                      title: Text(e),
+                      trailing: TextButton(
+                        onPressed: () => _startAvd(ref, e),
+                        child: const Text('Start'),
+                      ),
+                    ),
+                  )
+                  .toList(),
+            ),
     );
   }
 }
