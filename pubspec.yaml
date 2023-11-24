@@ -1,9 +1,9 @@
 name: avd_manager
-description: "A new Flutter project."
+description: "An app to manage Android Virtual Devices"
 
 publish_to: "none"
 
-version: 1.0.0+1
+version: 0.0.1+1
 
 environment:
   sdk: ">=3.2.0 <4.0.0"
@@ -15,6 +15,8 @@ dependencies:
   process_run: ^0.13.2
   hooks_riverpod: ^2.4.8
   gap: ^3.0.1
+  shared_preferences: ^2.2.2
+  window_manager: ^0.3.7
 
 dev_dependencies:
   flutter_test:

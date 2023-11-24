@@ -1,5 +1,5 @@
-import 'package:avd_manager/src/pages/home/adb_devices.dart';
-import 'package:avd_manager/src/pages/home/emulators.dart';
+import 'package:avd_manager/src/pages/home_page/adb_devices.dart';
+import 'package:avd_manager/src/pages/home_page/emulators.dart';
 import 'package:avd_manager/src/providers/adb_devices_provider.dart';
 import 'package:avd_manager/src/providers/avds_provider.dart';
 import 'package:flutter/material.dart';
@@ -13,13 +13,17 @@ class HomePage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       body: SingleChildScrollView(
+        padding: const EdgeInsets.all(8),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text('Emulators'),
+                Text(
+                  'Emulators',
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
                 IconButton(
                   onPressed: () => ref.refresh(avdsProvider.future),
                   icon: ref.watch(avdsProvider).isRefreshing
@@ -28,12 +32,15 @@ class HomePage extends ConsumerWidget {
                 )
               ],
             ),
-            const Emulators(),
-            const Gap(24),
+            const Card(child: Emulators()),
+            const Gap(8),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text('ADB devices'),
+                Text(
+                  'ADB devices',
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
                 IconButton(
                   onPressed: () => ref.refresh(adbDevicesProvider.future),
                   icon: ref.watch(adbDevicesProvider).isRefreshing
@@ -42,7 +49,7 @@ class HomePage extends ConsumerWidget {
                 )
               ],
             ),
-            const AdbDevices(),
+            const Card(child: AdbDevices()),
           ],
         ),
       ),
