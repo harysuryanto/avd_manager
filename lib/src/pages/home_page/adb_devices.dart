@@ -26,8 +26,7 @@ class AdbDevices extends HookConsumerWidget {
     BuildContext context,
     String serialNumber,
   ) async {
-    final shell = Shell();
-    final result = (await shell.run('adb connect $serialNumber')).first.outText;
+    final result = (await run('adb connect $serialNumber')).first.outText;
     ref.invalidate(adbDevicesProvider);
 
     if (context.mounted) {
@@ -40,9 +39,7 @@ class AdbDevices extends HookConsumerWidget {
     BuildContext context,
     String serialNumber,
   ) async {
-    final shell = Shell();
-    final result =
-        (await shell.run('adb disconnect $serialNumber')).first.outText;
+    final result = (await run('adb disconnect $serialNumber')).first.outText;
     ref.invalidate(adbDevicesProvider);
 
     if (context.mounted) {

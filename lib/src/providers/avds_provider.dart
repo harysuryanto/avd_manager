@@ -3,8 +3,7 @@ import 'package:process_run/shell.dart';
 
 final avdsProvider = FutureProvider<List<String>>(
   (ref) async {
-    final shell = Shell();
-    final results = await shell.run('emulator -list-avds');
+    final results = await run('emulator -list-avds');
     return results.map((e) => e.outText).toList();
   },
 );

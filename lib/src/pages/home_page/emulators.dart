@@ -12,8 +12,7 @@ class Emulators extends HookConsumerWidget {
   const Emulators({super.key});
 
   Future<void> _startAvd(WidgetRef ref, String name) async {
-    final shell = Shell();
-    await shell.run('emulator -avd $name -no-boot-anim');
+    await run('emulator -avd $name -no-boot-anim');
     ref.invalidate(adbDevicesProvider);
   }
 

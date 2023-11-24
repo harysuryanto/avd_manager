@@ -19,8 +19,7 @@ class HomePage extends HookConsumerWidget {
     BuildContext context,
     String serialNumber,
   ) async {
-    final shell = Shell();
-    final result = (await shell.run('adb connect $serialNumber')).first.outText;
+    final result = (await run('adb connect $serialNumber')).first.outText;
 
     if (context.mounted) {
       context.showSnackBarMessage(result);
