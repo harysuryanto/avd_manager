@@ -9,6 +9,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:process_run/shell.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class HomePage extends HookConsumerWidget {
   const HomePage({super.key});
@@ -120,12 +121,34 @@ class HomePage extends HookConsumerWidget {
             ),
             const Card(child: AdbDevices()),
             const Gap(16),
-            Text(
-              'Developed by Hary Suryanto',
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: Theme.of(context).disabledColor,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'Developed by Hary Suryanto. ',
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: Theme.of(context).disabledColor,
+                      ),
+                ),
+                InkWell(
+                  onTap: () => launchUrl(
+                    Uri.parse('https://github.com/harysuryanto/avd_manager'),
                   ),
-              textAlign: TextAlign.center,
+                  child: Text(
+                    'Contribute',
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: Theme.of(context).disabledColor,
+                          decoration: TextDecoration.underline,
+                        ),
+                  ),
+                ),
+                Text(
+                  '.',
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: Theme.of(context).disabledColor,
+                      ),
+                ),
+              ],
             ),
           ],
         ),
