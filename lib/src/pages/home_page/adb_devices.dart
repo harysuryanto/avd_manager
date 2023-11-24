@@ -1,4 +1,5 @@
 import 'package:avd_manager/src/providers/adb_devices_provider.dart';
+import 'package:avd_manager/src/utils/snackbar_message.dart';
 import 'package:avd_manager/src/widgets/async_value_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -17,16 +18,33 @@ class _DeviceStatus {
 class AdbDevices extends ConsumerWidget {
   const AdbDevices({super.key});
 
-  Future<void> connectDevice(WidgetRef ref, String serialNumber) async {
+  Future<void> _connectDevice(
+    WidgetRef ref,
+    BuildContext context,
+    String serialNumber,
+  ) async {
     final shell = Shell();
-    await shell.run('adb connect $serialNumber');
+    final result = (await shell.run('adb connect $serialNumber')).first.outText;
     ref.invalidate(adbDevicesProvider);
+
+    if (context.mounted) {
+      context.showSnackBarMessage(result);
+    }
   }
 
-  Future<void> disconnectDevice(WidgetRef ref, String serialNumber) async {
+  Future<void> _disconnectDevice(
+    WidgetRef ref,
+    BuildContext context,
+    String serialNumber,
+  ) async {
     final shell = Shell();
-    await shell.run('adb disconnect $serialNumber');
+    final result =
+        (await shell.run('adb disconnect $serialNumber')).first.outText;
     ref.invalidate(adbDevicesProvider);
+
+    if (context.mounted) {
+      context.showSnackBarMessage(result);
+    }
   }
 
   @override
@@ -51,6 +69,9 @@ class AdbDevices extends ConsumerWidget {
                   InkWell(
                     onTap: () => Clipboard.setData(
                       ClipboardData(text: serialNumber),
+                    ).then(
+                      (value) =>
+                          context.showSnackBarMessage('Copied $serialNumber'),
                     ),
                     child: const Icon(Icons.copy, size: 10),
                   ),
@@ -75,8 +96,8 @@ class AdbDevices extends ConsumerWidget {
               ),
               trailing: TextButton(
                 onPressed: () => status == _DeviceStatus.device
-                    ? disconnectDevice(ref, serialNumber)
-                    : connectDevice(ref, serialNumber),
+                    ? _disconnectDevice(ref, context, serialNumber)
+                    : _connectDevice(ref, context, serialNumber),
                 child: Text(
                   status == _DeviceStatus.device ? 'Disconnect' : 'Connect',
                 ),
