@@ -1,8 +1,11 @@
+import 'dart:async';
+
 import 'package:avd_manager/src/providers/adb_devices_provider.dart';
 import 'package:avd_manager/src/utils/snackbar_message.dart';
 import 'package:avd_manager/src/widgets/async_value_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:process_run/shell.dart';
@@ -15,7 +18,7 @@ class _DeviceStatus {
   const _DeviceStatus._();
 }
 
-class AdbDevices extends ConsumerWidget {
+class AdbDevices extends HookConsumerWidget {
   const AdbDevices({super.key});
 
   Future<void> _connectDevice(
@@ -50,6 +53,13 @@ class AdbDevices extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final provider = adbDevicesProvider;
+
+    useEffect(() {
+      final timer = Timer.periodic(const Duration(seconds: 5), (timer) {
+        ref.invalidate(adbDevicesProvider);
+      });
+      return () => timer.cancel();
+    }, []);
 
     return AsyncValueWidget(
       value: ref.watch(provider),
