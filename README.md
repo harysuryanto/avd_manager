@@ -1,15 +1,8 @@
-# avd_manager
+# AVD Manager
 
-A new Flutter project.
+An app to manage your Android Virtual Devices.
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+![image](https://github.com/harysuryanto/avd_manager/assets/17674038/a2c5a77f-0e36-4fc8-b55a-42e77ebb15be)
 
 For help getting started with Flutter development, view the
 [online documentation](https://docs.flutter.dev/), which offers tutorials,
