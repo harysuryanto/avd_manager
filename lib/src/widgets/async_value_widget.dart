@@ -1,3 +1,4 @@
+import 'package:avd_manager/src/widgets/progress_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -55,7 +56,7 @@ class AsyncValueWidget<T> extends StatelessWidget {
   }
 
   Widget _buildDefaultLoadingWidget() {
-    return const Center(child: CircularProgressIndicator.adaptive());
+    return const Center(child: MyProgressIndicator());
   }
 
   Widget _buildDefaultErrorWidget(Object error) {
@@ -92,10 +93,7 @@ class _RefreshButton extends StatelessWidget {
         ? const Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              SizedBox.square(
-                dimension: 14,
-                child: CircularProgressIndicator.adaptive(strokeWidth: 2),
-              ),
+              MyProgressIndicator(),
               Gap(8),
               Text('Refreshing'),
             ],
