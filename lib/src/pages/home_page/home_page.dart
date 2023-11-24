@@ -125,6 +125,14 @@ class HomePage extends HookConsumerWidget {
               ],
             ),
             const Card(child: AdbDevices()),
+            const Gap(16),
+            Text(
+              'Developed by Hary Suryanto',
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: Theme.of(context).disabledColor,
+                  ),
+              textAlign: TextAlign.center,
+            ),
           ],
         ),
       ),
