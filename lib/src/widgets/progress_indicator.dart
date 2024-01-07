@@ -1,13 +1,21 @@
 import 'package:flutter/material.dart';
 
 class MyProgressIndicator extends StatelessWidget {
-  const MyProgressIndicator({super.key});
+  const MyProgressIndicator({
+    super.key,
+    this.padding = const EdgeInsets.all(8),
+  });
+
+  final EdgeInsets padding;
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox.square(
-      dimension: Theme.of(context).textTheme.bodyMedium?.fontSize,
-      child: const CircularProgressIndicator.adaptive(strokeWidth: 3),
+    return Padding(
+      padding: padding,
+      child: SizedBox.square(
+        dimension: Theme.of(context).textTheme.bodyMedium?.fontSize,
+        child: const CircularProgressIndicator.adaptive(strokeWidth: 2),
+      ),
     );
   }
 }
