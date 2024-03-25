@@ -19,10 +19,17 @@ class StartDeviceButton extends HookConsumerWidget {
     final isStarting = useState(false);
 
     /// Returns [true] if success, otherwise returns [false].
-    Future<bool> connectDevice(String serialNumber) async {
+    Future<bool> connectDevice(
+      String serialNumber, [
+      bool coldBoot = false,
+    ]) async {
       isStarting.value = true;
 
-      final result = (await run('adb connect $serialNumber')).first.outText;
+      final result = (await run(
+        'emulator @$serialNumber ${coldBoot ? '-no-snapshot-load' : ''}',
+      ))
+          .first
+          .outText;
 
       isStarting.value = false;
 
@@ -39,10 +46,23 @@ class StartDeviceButton extends HookConsumerWidget {
       return false;
     }
 
-    return Button(
-      onPressed: () => connectDevice(serialNumber),
-      isLoading: isStarting.value,
-      child: const Text('Start'),
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Button(
+          onPressed: () => connectDevice(serialNumber),
+          isLoading: isStarting.value,
+          child: const Text('Start'),
+        ),
+        PopupMenuButton(
+          itemBuilder: (BuildContext context) => <PopupMenuEntry>[
+            PopupMenuItem(
+              onTap: () => connectDevice(serialNumber, true),
+              child: const Text('Cold start'),
+            ),
+          ],
+        ),
+      ],
     );
   }
 }
